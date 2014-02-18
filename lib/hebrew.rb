@@ -13,7 +13,8 @@ NIKKUD_UTF8 = [0x05b0, 0x05b1, 0x05b2, 0x05b3, 0x05b4, 0x05b5, 0x05b6, 0x05b7, 0
 FIANLS_CP1255 = ["\xea".force_encoding('windows-1255'), "\xed".force_encoding('windows-1255'), "\xef".force_encoding('windows-1255'), "\xf3".force_encoding('windows-1255'), "\xf5".force_encoding('windows-1255')]
 
 FINALS_UTF8 = []
-
+HEB_UTF8_START = 1424
+HEB_UTF8_END = 1535
 # extend String class
 class String
   # this will return the string, stripped of any Hebrew nikkud characters
@@ -42,6 +43,25 @@ class String
       end
     }
     return target
+  end
+  def any_hebrew?
+    case self.encoding
+    when Encoding::UTF_8
+      self.each_codepoint {|cp| return true if is_hebrew_codepoint_utf8(cp) }
+      return false
+    when Encoding::WINDOWS_1255 || Encoding::CP1255
+      self.each_codepoint {|cp| return true if is_hebrew_codepoint_cp1255(cp) }
+      return false
+    else
+      return false
+    end
+  end
+  def is_hebrew_codepoint_utf8(cp)
+    if cp >= HEB_UTF8_START && cp <= HEB_UTF8_END
+      return true
+    else
+      return false
+    end
   end
   # TODO: add strip_nikkud!
   def is_nikkud(c)
