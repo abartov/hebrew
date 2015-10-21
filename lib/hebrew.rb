@@ -31,7 +31,7 @@ class String
     target = ''.force_encoding('windows-1255')
     self.each_codepoint {|cp|
       unless self.class.is_codepoint_nikkud_cp1255(cp)
-        target += cp.chr(Encoding::CP1255) # is there a neater way?
+        target << cp.chr(Encoding::CP1255) # is there a neater way?
       end
     }
     return target
@@ -40,7 +40,7 @@ class String
     target = ''
     self.each_codepoint {|cp|
       unless self.class.is_codepoint_nikkud_utf8(cp)
-        target += cp.chr(Encoding::UTF_8)
+        target << cp.chr(Encoding::UTF_8)
       end
     }
     return target
@@ -77,7 +77,7 @@ class String
     #NIKKUD_CP1255.include?(cp) # cleaner, but much slower
   end
   def self.is_codepoint_nikkud_utf8(cp)
-    return ((cp > 0x05af && cp < 0x05ba) or [0x05bb, 0x05bc, 0x05c1, 0x05c2].include?(cp))
+    return ((cp > 0x05af && cp < 0x05bd) or [0x05c1, 0x05c2].include?(cp))
     #NIKKUD_UTF8.include?(cp) # cleaner, but much slower
   end
   # this will return true if the first parameter is a nikkud character in the encoding of the second parameter
