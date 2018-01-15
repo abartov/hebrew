@@ -58,6 +58,24 @@ class String
       return false
     end
   end
+
+  def falsehood
+    false
+  end
+
+  def any_nikkud?
+    func = case self.encoding
+      when Encoding::UTF_8
+        :is_codepoint_nikkud_utf8
+      when Encoding::WINDOWS_1255 || Encoding::CP1255
+        :is_codepoint_nikkud_cp1255
+      else
+        :falsehood
+      end
+    self.each_codepoint{|cp| return true if String.send(func, cp)}
+    return false
+  end
+
   def is_hebrew_codepoint_cp1255(cp)
     return ((cp > 191 && cp < 202) or [203, 204, 209, 210].include?(cp))
   end
