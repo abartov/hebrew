@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'hebrew'
-  s.version     = '0.2.1'
-  s.date        = '2019-09-05'
+  s.version     = '0.2.2'
+  s.date        = '2020-10-20'
   s.summary     = "Hebrew string manipulation"
   s.description = "Some useful code to identify, transcode, and manipulate Hebrew text"
   s.authors     = ["Asaf Bartov"]

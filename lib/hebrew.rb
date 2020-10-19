@@ -13,6 +13,10 @@ FIANLS_CP1255 = ["\xea".force_encoding('windows-1255'), "\xed".force_encoding('w
 FINALS_UTF8 = ["\u05da", "\u05dd", "\u05df", "\u05e3", "\u05e5"]
 HEB_UTF8_START = 1424
 HEB_UTF8_END = 1535
+HEB_UTF8_XIRIK = 1460
+HEB_UTF8_XOLAM = 1465
+HEB_UTF8_QUBBUTS = 1467
+HEB_UTF8_SHURUK = 1468
 
 # extend String class
 class String
@@ -85,6 +89,25 @@ class String
 
   def falsehood
     false
+  end
+
+  # this will add matres lectionis (yods and vavs as vowels) after diacritics that denote those vowels. The result won't always be morphologically correct Hebrew, but is useful for generating mostly-likely variants users may search for, when typing inputs (almost no Hebrew users know how to produce diacritics on the keyboard).
+  def naive_full_nikkud
+    ret = ''
+    prev_char = nil
+    case self.encoding
+    when Encoding::UTF_8
+      self.each_char do |c|
+        ret += c
+        ret += 'י' if c.codepoints[0] == HEB_UTF8_XIRIK
+        ret += 'ו' if c.codepoints[0] == HEB_UTF8_QUBBUTS
+        ret += 'ו' if [HEB_UTF8_XOLAM, HEB_UTF8_SHURUK].include?(c.codepoints[0]) && prev_char != 'ו'
+        prev_char = c
+      end
+      return ret.gsub('יי','ִי') # get rid of extraneous yods possibly added because we weren't looking ahead
+    else
+      return nil # not implemented for other encodings for now.
+    end
   end
 
   def any_nikkud?
