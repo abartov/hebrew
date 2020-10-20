@@ -101,7 +101,7 @@ class String
         ret += c
         ret += 'י' if c.codepoints[0] == HEB_UTF8_XIRIK
         ret += 'ו' if c.codepoints[0] == HEB_UTF8_QUBBUTS
-        ret += 'ו' if [HEB_UTF8_XOLAM, HEB_UTF8_SHURUK].include?(c.codepoints[0]) && prev_char != 'ו'
+        ret += 'ו' if c.codepoints[0] == HEB_UTF8_XOLAM && prev_char != 'ו'
         prev_char = c
       end
       return ret.gsub('יי','ִי') # get rid of extraneous yods possibly added because we weren't looking ahead
