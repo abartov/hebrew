@@ -104,7 +104,7 @@ class String
         ret += 'ו' if c.codepoints[0] == HEB_UTF8_XOLAM && prev_char != 'ו'
         prev_char = c
       end
-      return ret.gsub('יי','ִי') # get rid of extraneous yods possibly added because we weren't looking ahead
+      return ret.gsub("\u05b4יי","\u05b4י") # get rid of extraneous yods possibly added because we weren't looking ahead
     else
       return nil # not implemented for other encodings for now.
     end
